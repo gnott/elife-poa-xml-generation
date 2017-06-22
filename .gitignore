@@ -17,4 +17,4 @@ tmp/*
 !tmp/.keepme
 tests/*.log
 tests/test_output/*
-tests/tmp/generated_xml_output/*
+tests/tmp/*
