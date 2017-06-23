@@ -101,6 +101,29 @@ class TestTransformZip(unittest.TestCase):
         # cleanup
         self.cleanup_directories()
 
+    def test_process_zipfile_01466(self):
+        "example with a transparent reporting form"
+        # can use any PDF file here for this test
+        decap_pdf = self.decap_pdf
+        zipfile_name = settings.XLS_PATH + 'transform' + os.sep + '6744_1_supp_mat_highwire_zip_69348_2rn9t0.zip'
+        supp_files_zip_name = settings.TMP_DIR + os.sep + 'elife01466_Supplemental_files.zip'
+        supp_file_count = 1
+
+        output_dir = settings.TEST_TEMP_DIR
+
+        # mock the PDF decapitation by copying a PDF file over
+        transform.copy_pdf_to_hw_staging_dir = (
+            MethodType(self.fake_copy_pdf_to_hw_staging_dir, decap_pdf))
+
+        transform.process_zipfile(zipfile_name, output_dir)
+
+        # verify
+        with zipfile.ZipFile(supp_files_zip_name, 'r') as supp_zip_file:
+            self.assertEqual(supp_file_count, len(supp_zip_file.namelist()), )
+
+        # cleanup
+        self.cleanup_directories()
+
 
 if __name__ == '__main__':
     unittest.main()
